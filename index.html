@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHYTO DIGITAL</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #07111f;
+  color: white;
+  text-align: center;
+}
+header { padding: 25px; background: #101f35; }
+h1 { color: #00e5ff; }
+main { padding: 20px; }
+.card {
+  background: #14243a;
+  padding: 20px;
+  margin: 15px auto;
+  border-radius: 15px;
+  max-width: 420px;
+}
+.price { font-size: 30px; color: #00e5ff; }
+button {
+  background: #00cba9;
+  border: 0;
+  padding: 14px 25px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+<header>
+<h1>CHYTO DIGITAL</h1>
+<p>Tu asistente inteligente de trading</p>
+</header>
+<main>
+<div class="card">
+<h2>Panel de control</h2>
+<p>Estado del sistema</p>
+<h2 style="color:#00e5ff">EN DEMO</h2>
+</div>
+<div class="card">
+<h2>Mercado cripto</h2>
+<p>BTC / USDT</p>
+<div class="price" id="price">Esperando datos...</div>
+<p id="status">Conectando...</p>
+</div>
+<div class="card">
+<h2>Señales de mercado</h2>
+<p id="signal">Analizando mercado...</p>
+<button onclick="analyze()">ANALIZAR</button>
+</div>
+</main>
+<script>
+async function analyze() {
+ document.getElementById("signal").innerText =
+ "Análisis de demostración. Sin operaciones reales.";
+}
+async function updatePrice() {
+ try {
+  const r = await fetch("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT");
+  const d = await r.json();
+  document.getElementById("price").innerText =
+  "$" + Number(d.price).toLocaleString("en-US");
+  document.getElementById("status").innerText = "Datos recibidos de Binance";
+ } catch(e) {
+  document.getElementById("status").innerText = "No se pudo conectar";
+ }
+}
+updatePrice();
+setInterval(updatePrice, 15000);
+</script>
+</body>
+</html>
